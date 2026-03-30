@@ -4,8 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SkillHub • The Living Network of Learners</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Reliable Tailwind CDN for 2026 -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600&display=swap" rel="stylesheet">
+    
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600&display=swap');
         
@@ -96,7 +100,6 @@
             </div>
            
             <div class="hidden md:flex items-center gap-x-8 text-sm font-medium">
-                <a onclick="smoothScrollTo('features')" class="cursor-pointer hover:text-[#00f5ff]">Features</a>
                 <a onclick="smoothScrollTo('how')" class="cursor-pointer hover:text-[#00f5ff]">How it Works</a>
                 <a onclick="smoothScrollTo('pricing')" class="cursor-pointer hover:text-[#00f5ff]">Pricing</a>
                 <a onclick="smoothScrollTo('why')" class="cursor-pointer hover:text-[#00f5ff]">Why Us</a>
@@ -229,7 +232,6 @@
             <h2 class="text-5xl font-semibold mb-6">Have questions or feedback?</h2>
             <p class="text-xl text-white/80 mb-8">We're happy to hear from you. Send us an email anytime.</p>
             
-            <!-- Fixed Contact Button -->
             <a href="mailto:skill.hub11111@gmail.com" 
                class="inline-flex items-center gap-3 px-12 py-6 text-xl font-semibold rounded-3xl bg-gradient-to-r from-[#ff7a18] to-[#ff3cac] hover:scale-105 transition-all shadow-lg">
                 📧 Contact Us at skill.hub11111@gmail.com
@@ -273,7 +275,7 @@
     </div>
 
     <script>
-        // Your existing script (kept unchanged except for contact)
+        // Skills for floating tags
         const skills = [
             { emoji: "🐍", name: "Python", color: "#ff7a18" },
             { emoji: "✂️", name: "Video Editing", color: "#ff3cac" },
@@ -283,9 +285,10 @@
 
         function populateSkillTags() {
             const container = document.getElementById('floating-tags');
+            container.innerHTML = '';
             skills.forEach(skill => {
                 const tag = document.createElement('div');
-                tag.className = `skill-tag glass px-6 py-3 rounded-3xl flex items-center gap-3 text-sm font-medium hover:scale-110 active:scale-95`;
+                tag.className = `skill-tag glass px-6 py-3 rounded-3xl flex items-center gap-3 text-sm font-medium hover:scale-110 active:scale-95 cursor-pointer`;
                 tag.style.border = `1px solid ${skill.color}30`;
                 tag.innerHTML = `<span class="text-2xl">${skill.emoji}</span><span>${skill.name}</span>`;
                 tag.onclick = () => pulseNetworkForSkill(skill.name);
@@ -293,6 +296,7 @@
             });
         }
 
+        // Network Canvas
         let canvas, ctx, nodes = [];
         function initNetwork() {
             canvas = document.getElementById('networkCanvas');
@@ -318,8 +322,7 @@
                 const my = e.clientY - rect.top;
                 nodes.forEach(node => {
                     const dist = Math.hypot(node.x - mx, node.y - my);
-                    if (dist < 80) node.r = 48;
-                    else node.r = 35;
+                    node.r = dist < 80 ? 48 : 35;
                 });
             });
 
@@ -397,6 +400,7 @@
             setTimeout(() => tooltip.classList.add('hidden'), 2200);
         }
 
+        // Dashboard Mockup
         function initDashboardMockup() {
             const sessions = [
                 { title: "Python Debugging", teacher: "Priya Sharma", time: "Live in 12 min", price: "₹320" },
@@ -404,9 +408,10 @@
                 { title: "Public Speaking", teacher: "Anika Patel", time: "In 47 min", price: "₹280" }
             ];
             const container = document.getElementById('session-list');
+            container.innerHTML = '';
             sessions.forEach(s => {
                 const div = document.createElement('div');
-                div.className = "glass p-4 rounded-2xl hover:scale-[1.02] cursor-pointer";
+                div.className = "glass p-4 rounded-2xl hover:scale-[1.02] cursor-pointer transition-transform";
                 div.innerHTML = `
                     <div class="flex justify-between">
                         <div>
@@ -424,6 +429,7 @@
             });
         }
 
+        // How It Works
         function initHowItWorks() {
             const steps = [
                 { num: "01", title: "Create Profile", desc: "Show what you know and want to learn" },
@@ -433,9 +439,10 @@
             ];
            
             const container = document.getElementById('steps-container');
+            container.innerHTML = '';
             steps.forEach(step => {
                 const el = document.createElement('div');
-                el.className = `glass rounded-3xl p-8 text-center cursor-pointer hover:glow-cyan`;
+                el.className = `glass rounded-3xl p-8 text-center cursor-pointer hover:scale-105 transition-transform`;
                 el.innerHTML = `
                     <div class="text-6xl mb-4 text-[#00f5ff]">${step.num}</div>
                     <div class="text-2xl font-semibold mb-3">${step.title}</div>
@@ -488,13 +495,17 @@
         }
 
         function smoothScrollTo(sectionId) {
-            document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
+            const el = document.getElementById(sectionId);
+            if (el) el.scrollIntoView({ behavior: 'smooth' });
         }
 
-        // Chatbot
+        // ==================== IMPROVED CHATBOT ====================
         function toggleChat() {
             const win = document.getElementById('chat-window');
             win.style.display = (win.style.display === 'flex') ? 'none' : 'flex';
+            if (win.style.display === 'flex') {
+                setTimeout(() => document.getElementById('chat-input').focus(), 300);
+            }
         }
 
         function sendMessage() {
@@ -504,6 +515,7 @@
 
             const messagesDiv = document.getElementById('chat-messages');
 
+            // User message
             const userMsg = document.createElement('div');
             userMsg.className = "bg-[#ff7a18] text-white p-3 rounded-2xl rounded-tr-none ml-auto max-w-[80%] mb-3";
             userMsg.textContent = text;
@@ -512,47 +524,77 @@
 
             input.value = '';
 
+            // Typing indicator
+            const typing = document.createElement('div');
+            typing.id = 'typing-indicator';
+            typing.className = "bg-[#1f1f1f] p-3 rounded-2xl rounded-tl-none max-w-[85%] mb-3 flex items-center gap-2";
+            typing.innerHTML = `<div class="flex gap-1"><div class="w-2 h-2 bg-white/70 rounded-full animate-bounce"></div><div class="w-2 h-2 bg-white/70 rounded-full animate-bounce" style="animation-delay:150ms"></div><div class="w-2 h-2 bg-white/70 rounded-full animate-bounce" style="animation-delay:300ms"></div></div><span class="text-white/60 text-sm">thinking...</span>`;
+            messagesDiv.appendChild(typing);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+
             setTimeout(() => {
-                let reply = "Thanks for your question! How can I help you with SkillHub?";
-
-                const lower = text.toLowerCase();
-
-                if (lower.includes("when") && (lower.includes("live") || lower.includes("launch") || lower.includes("release") || lower.includes("ready") || lower.includes("come"))) {
-                    reply = "Very soon! 🚀 We're working hard to bring the full living network to you.";
-                } 
-                else if (lower.includes("how") || lower.includes("work")) {
-                    reply = "You create a profile, list your skills, and connect with peers through live 1:1 video sessions.";
-                } 
-                else if (lower.includes("price") || lower.includes("cost") || lower.includes("free")) {
-                    reply = "It's completely free to join. Pro plan starts at $12/month.";
-                } 
-                else if (lower.includes("earn") || lower.includes("money")) {
-                    reply = "Yes! You can earn money by teaching your skills to other students through live sessions.";
-                } 
-                else if (lower.includes("hello") || lower.includes("hi")) {
-                    reply = "Hello! Welcome to SkillHub. What would you like to know?";
-                }
-
+                typing.remove();
+                const reply = getSmartReply(text);
                 const botMsg = document.createElement('div');
-                botMsg.className = "bg-[#1f1f1f] p-3 rounded-2xl rounded-tl-none max-w-[85%] mb-3";
+                botMsg.className = "bg-[#1f1f1f] p-3 rounded-2xl rounded-tl-none max-w-[85%] mb-3 whitespace-pre-line";
                 botMsg.textContent = reply;
                 messagesDiv.appendChild(botMsg);
                 messagesDiv.scrollTop = messagesDiv.scrollHeight;
             }, 700);
         }
 
-        // Initialize
+        function getSmartReply(message) {
+            const lower = message.toLowerCase().trim();
+
+            if (["hi", "hello", "hey", "namaste"].some(g => lower.includes(g))) {
+                return "Hello! 👋 Welcome to SkillHub. How can I help you today?";
+            }
+            if (lower.includes("price") || lower.includes("cost") || lower.includes("fee") || lower.includes("pro")) {
+                return "SkillHub is completely free to join! You only pay for the 1:1 live sessions you attend (prices set by teachers, usually ₹200–₹600). Pro plan is ₹999/month for extra benefits.";
+            }
+            if (lower.includes("earn") || (lower.includes("money") && lower.includes("teach"))) {
+                return "Yes! You can earn real money by teaching. Many students make ₹8,000–₹25,000 per month. We take only 15% platform fee and pay you instantly.";
+            }
+            if (lower.includes("how") || lower.includes("work") || lower.includes("use")) {
+                return "1. Create your free profile\n2. List skills you can teach or want to learn\n3. Connect via live 1:1 video calls with screen sharing\n4. Learn or earn money — it's that simple!";
+            }
+            if (lower.includes("when") || lower.includes("launch") || lower.includes("release") || lower.includes("live")) {
+                return "The full platform is launching very soon in 2026! You can join now and get early access.";
+            }
+            if (lower.includes("python")) {
+                return "Python is one of the most popular skills on SkillHub! You can find many live sessions for beginners to advanced topics like Django, Data Science, etc.";
+            }
+            if (lower.includes("delhi") || lower.includes("india")) {
+                return "SkillHub is built for Indian students! We have strong communities in Delhi, Mumbai, Bangalore and more. Sessions often happen in English + Hinglish.";
+            }
+            if (lower.includes("contact") || lower.includes("support")) {
+                return "You can email us anytime at skill.hub11111@gmail.com. Our team replies quickly.";
+            }
+
+            return "Great question! SkillHub connects students for live 1:1 peer learning and teaching. What would you like to know more about — joining, earning money, pricing, or specific skills?";
+        }
+
+        function setupChatInput() {
+            const input = document.getElementById('chat-input');
+            input.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') sendMessage();
+            });
+        }
+
+        // Initialize everything
         window.onload = function() {
             populateSkillTags();
             initNetwork();
             initDashboardMockup();
             initHowItWorks();
+            setupChatInput();
 
+            // Welcome message in chat
             const messagesDiv = document.getElementById('chat-messages');
             messagesDiv.innerHTML = `
                 <div class="bg-[#1f1f1f] p-3 rounded-2xl rounded-tl-none">
-                    Hi! I'm the SkillHub Assistant.<br>
-                    How can I help you today?
+                    Hi! I'm the SkillHub Assistant.<br><br>
+                    Ask me anything about joining, earning, how it works, pricing, or specific skills!
                 </div>
             `;
         };
